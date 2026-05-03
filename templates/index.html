@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBER DEFENSE MONITORING SYSTEM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 0, 110, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 100%, rgba(0, 210, 211, 0.1) 0%, transparent 50%);
+            animation: pulse 4s ease-in-out infinite alternate;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            background: linear-gradient(45deg, #00ff88, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            0% { filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5)); }
+            100% { filter: drop-shadow(0 0 20px rgba(255, 0, 110, 0.5)); }
+        }
+        .hero-description {
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        .btn-cyber {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            margin: 15px;
+            transition: all 0.4s ease;
+            border: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-cyber::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        .btn-cyber:hover::before {
+            left: 100%;
+        }
+        .btn-honeypot {
+            background: linear-gradient(45deg, #ff006e, #ff4081);
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.3);
+        }
+        .btn-honeypot:hover {
+            background: linear-gradient(45deg, #ff4081, #ff006e);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 0, 110, 0.4);
+        }
+        .btn-dashboard {
+            background: linear-gradient(45deg, #00ff88, #00cc6a);
+            color: #000000;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+        .btn-dashboard:hover {
+            background: linear-gradient(45deg, #00cc6a, #00ff88);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 255, 136, 0.4);
+        }
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+        .features-section {
+            margin-top: 4rem;
+        }
+        .feature-card {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(48, 43, 99, 0.2));
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 1.5rem;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+        }
+        .feature-card:hover::before {
+            animation: scan 1s linear infinite;
+        }
+        @keyframes scan {
+            0% { transform: rotate(45deg) translateX(-100%); }
+            100% { transform: rotate(45deg) translateX(100%); }
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.3);
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+        .feature-card:hover .feature-icon {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00ff88;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+        .feature-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+        .cyber-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 10s linear infinite;
+        }
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        .logo-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            animation: rotate 10s linear infinite;
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .status-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid rgba(0, 255, 136, 0.5);
+            border-radius: 25px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+        
+        /* Cyber Security Animations */
+        .cyber-animations {
+            position: relative;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Animated Shield */
+        .animated-shield {
+            position: absolute;
+            top: 20%;
+            right: 20%;
+            font-size: 4rem;
+            color: #00ff88;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.8);
+            animation: shield-float 3s ease-in-out infinite;
+            z-index: 10;
+        }
+        
+        .shield-pulse {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%;
+            height: 120%;
+            border: 2px solid #00ff88;
+            border-radius: 50%;
+            animation: shield-pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes shield-float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+        
+        @keyframes shield-pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+        }
+        
+        /* Floating Locks */
+        .floating-locks {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .floating-locks i {
+            position: absolute;
+            color: #ff006e;
+            font-size: 1.5rem;
+            text-shadow: 0 0 15px rgba(255, 0, 110, 0.6);
+        }
+        
+        .lock-1 {
+            top: 30%;
+            left: 10%;
+            animation: float-lock 4s ease-in-out infinite;
+        }
+        
+        .lock-2 {
+            top: 60%;
+            left: 30%;
+            animation: float-lock 4s ease-in-out infinite 1s;
+        }
+        
+        .lock-3 {
+            top: 40%;
+            right: 10%;
+            animation: float-lock 4s ease-in-out infinite 2s;
+        }
+        
+        @keyframes float-lock {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(180deg); }
+        }
+        
+        /* Security Code Animation */
+        .security-code {
+            position: absolute;
+            top: 15%;
+            left: 10%;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            backdrop-filter: blur(5px);
+        }
+        
+        .code-line {
+            margin: 5px 0;
+            opacity: 0;
+            animation: code-typing 8s linear infinite;
+        }
+        
+        .code-line:nth-child(1) { animation-delay: 0s; }
+        .code-line:nth-child(2) { animation-delay: 1.5s; }
+        .code-line:nth-child(3) { animation-delay: 3s; }
+        .code-line:nth-child(4) { animation-delay: 4.5s; }
+        .code-line:nth-child(5) { animation-delay: 6s; }
+        
+        @keyframes code-typing {
+            0%, 15% { opacity: 0; }
+            20%, 80% { opacity: 1; }
+            85%, 100% { opacity: 0; }
+        }
+        
+        /* Radar Animation */
+        .radar-container {
+            position: absolute;
+            bottom: 20%;
+            right: 15%;
+            width: 150px;
+            height: 150px;
+        }
+        
+        .radar-circle {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border: 2px solid #00ff88;
+            border-radius: 50%;
+            background: rgba(0, 255, 136, 0.1);
+            overflow: hidden;
+        }
+        
+        .radar-sweep {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #00ff88);
+            transform-origin: left center;
+            animation: radar-sweep 3s linear infinite;
+        }
+        
+        @keyframes radar-sweep {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .radar-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ff006e;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 0, 110, 0.8);
+        }
+        
+        .dot-1 { top: 30%; left: 40%; animation: radar-blink 2s ease-in-out infinite; }
+        .dot-2 { top: 60%; left: 70%; animation: radar-blink 2s ease-in-out infinite 0.5s; }
+        .dot-3 { top: 45%; left: 25%; animation: radar-blink 2s ease-in-out infinite 1s; }
+        
+        @keyframes radar-blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0.3; }
+        }
+        
+        /* Data Packets */
+        .data-packets {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .packet {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.5);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00ff88;
+            font-size: 1rem;
+        }
+        
+        .packet-1 {
+            top: 70%;
+            left: 20%;
+            animation: packet-move 6s linear infinite;
+        }
+        
+        .packet-2 {
+            top: 25%;
+            right: 25%;
+            animation: packet-move 6s linear infinite 2s;
+        }
+        
+        .packet-3 {
+            top: 50%;
+            left: 60%;
+            animation: packet-move 6s linear infinite 4s;
+        }
+        
+        @keyframes packet-move {
+            0% { transform: translateX(0) translateY(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(100px) translateY(-50px); opacity: 0; }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 991.98px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-description {
+                font-size: 1.1rem;
+            }
+            
+            .cyber-animations {
+                height: 300px;
+            }
+            
+            .animated-shield {
+                font-size: 3rem;
+            }
+            
+            .security-code {
+                font-size: 0.7rem;
+                padding: 10px;
+            }
+            
+            .radar-container {
+                width: 120px;
+                height: 120px;
+            }
+        }
+        
+        @media (max-width: 767.98px) {
+            .hero-section {
+                padding: 2rem 0;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-description {
+                font-size: 1rem;
+            }
+            
+            .btn-cyber {
+                padding: 12px 30px;
+                font-size: 1rem;
+                margin: 10px;
+            }
+            
+            .feature-card {
+                margin: 1rem 0;
+                padding: 2rem;
+            }
+            
+            .cyber-animations {
+                display: none;
+            }
+            
+            .navbar-brand {
+                font-size: 1.2rem !important;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 0.3rem 0.8rem !important;
+                font-size: 0.9rem;
+            }
+            
+            .status-indicator {
+                top: 10px;
+                right: 10px;
+                padding: 8px 15px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 575.98px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .hero-description {
+                font-size: 0.9rem;
+            }
+            
+            .btn-cyber {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                margin: 5px;
+                display: block;
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+            
+            .logo-icon {
+                font-size: 3rem;
+            }
+            
+            .feature-card {
+                margin: 0.5rem 0;
+                padding: 1.5rem;
+            }
+            
+            .feature-icon {
+                font-size: 2.5rem;
+            }
+            
+            .feature-title {
+                font-size: 1.3rem;
+            }
+            
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
+            
+            .navbar-brand {
+                font-size: 1rem !important;
+            }
+            
+            .navbar-nav {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 0.2rem 0.5rem !important;
+                font-size: 0.8rem;
+                margin: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    
+    <div class="status-indicator">
+        <div class="status-dot"></div>
+        <span>SYSTEM ONLINE</span>
+    </div>
+
+    <div class="hero-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="hero-content">
+                <div class="mb-4">
+                    <i class="fas fa-shield-alt logo-icon"></i>
+                </div>
+                <h1 class="hero-title">CYBER DEFENSE SYSTEM</h1>
+                <p class="hero-description">
+                    Advanced threat detection platform using web-based honeypots to capture and analyze malicious login attempts in real-time
+                </p>
+                
+                <div class="mb-5">
+                    <a href="{% url 'honeypot_login' %}" class="btn btn-cyber btn-honeypot">
+                        <i class="fas fa-user-secret mr-2"></i>Test Honeypot
+                    </a>
+                    <a href="{% url 'dashboard' %}" class="btn btn-cyber btn-dashboard">
+                        <i class="fas fa-chart-line mr-2"></i>Command Center
+                    </a>
+                </div>
+
+                </div>
+                </div>
+                
+                <!-- Cyber Security Animations -->
+                <div class="col-lg-5">
+                    <div class="cyber-animations">
+                        <!-- Animated Shield -->
+                        <div class="animated-shield">
+                            <i class="fas fa-shield-alt"></i>
+                            <div class="shield-pulse"></div>
+                        </div>
+                        
+                        <!-- Floating Lock Icons -->
+                        <div class="floating-locks">
+                            <i class="fas fa-lock lock-1"></i>
+                            <i class="fas fa-lock lock-2"></i>
+                            <i class="fas fa-lock lock-3"></i>
+                        </div>
+                        
+                        <!-- Security Code Animation -->
+                        <div class="security-code">
+                            <div class="code-line">DETECTING THREATS...</div>
+                            <div class="code-line">SCANNING: SQL_INJECTION ✓</div>
+                            <div class="code-line">SCANNING: XSS_ATTEMPTS ✓</div>
+                            <div class="code-line">SCANNING: BRUTE_FORCE ✓</div>
+                            <div class="code-line">SYSTEM SECURE</div>
+                        </div>
+                        
+                        <!-- Radar Animation -->
+                        <div class="radar-container">
+                            <div class="radar-circle">
+                                <div class="radar-sweep"></div>
+                                <div class="radar-dot dot-1"></div>
+                                <div class="radar-dot dot-2"></div>
+                                <div class="radar-dot dot-3"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Data Packets -->
+                        <div class="data-packets">
+                            <div class="packet packet-1">
+                                <i class="fas fa-data"></i>
+                            </div>
+                            <div class="packet packet-2">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="packet packet-3">
+                                <i class="fas fa-server"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="features-section">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <i class="fas fa-bug feature-icon"></i>
+                            <h4 class="feature-title">Threat Detection</h4>
+                            <p class="feature-description">Real-time identification and logging of suspicious login attempts from malicious actors</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <i class="fas fa-chart-bar feature-icon"></i>
+                            <h4 class="feature-title">Advanced Analytics</h4>
+                            <p class="feature-description">Comprehensive attack pattern analysis with interactive visualizations and threat intelligence</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <i class="fas fa-exclamation-triangle feature-icon"></i>
+                            <h4 class="feature-title">Security Alerts</h4>
+                            <p class="feature-description">Automated threat notifications and brute force attack detection with immediate response</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(15, 12, 41, 0.95); backdrop-filter: blur(10px); border-bottom: 2px solid #00ff88;">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}" style="font-weight: 700; font-size: 1.4rem; color: #00ff88 !important; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);">
+                <i class="fas fa-shield-alt mr-2"></i>CYBER DEFENSE SYSTEM
+            </a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-item nav-link btn-nav" href="{% url 'home' %}" style="color: rgba(255,255,255,0.8); transition: all 0.3s ease; border-radius: 25px; padding: 0.5rem 1rem;">
+                    <i class="fas fa-home mr-1"></i> Home
+                </a>
+                <a class="nav-item nav-link btn-nav" href="{% url 'dashboard' %}" style="color: rgba(255,255,255,0.8); transition: all 0.3s ease; border-radius: 25px; padding: 0.5rem 1rem;">
+                    <i class="fas fa-chart-line mr-1"></i> Dashboard
+                </a>
+                <a class="nav-item nav-link btn-nav" href="{% url 'attack_logs' %}" style="color: rgba(255,255,255,0.8); transition: all 0.3s ease; border-radius: 25px; padding: 0.5rem 1rem;">
+                    <i class="fas fa-clock mr-1"></i> Recent Logs
+                </a>
+                <a class="nav-item nav-link btn-nav" href="{% url 'previous_logs' %}" style="color: rgba(255,255,255,0.8); transition: all 0.3s ease; border-radius: 25px; padding: 0.5rem 1rem;">
+                    <i class="fas fa-history mr-1"></i> Previous Logs
+                </a>
+                <a class="nav-item nav-link btn-nav" href="{% url 'attacker_types' %}" style="color: rgba(255,255,255,0.8); transition: all 0.3s ease; border-radius: 25px; padding: 0.5rem 1rem; background: rgba(0, 255, 136, 0.2); border: 1px solid rgba(0, 255, 136, 0.3);">
+                    <i class="fas fa-bug mr-1"></i> Attacker Types
+                </a>
+            </div>
+        </div>
+    </nav>
+    <script>
+        // Add cyber typing effect to page title
+        let title = "CYBER DEFENSE SYSTEM";
+        let i = 0;
+        function typeTitle() {
+            if (i < title.length) {
+                document.title += title.charAt(i);
+                i++;
+                setTimeout(typeTitle, 100);
+            }
+        }
+        setTimeout(typeTitle, 1000);
+        
+        // Add matrix rain effect
+        function createMatrixRain() {
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.pointerEvents = 'none';
+            canvas.style.opacity = '0.1';
+            canvas.style.zIndex = '-1';
+            document.body.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const matrix = "01";
+            const fontSize = 16;
+            const columns = canvas.width / fontSize;
+            const drops = [];
+            
+            for (let x = 0; x < columns; x++) {
+                drops[x] = 1;
+            }
+            
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 255, 136, 0.04)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#00ff88';
+                ctx.font = fontSize + 'px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = matrix.charAt(Math.floor(Math.random() * matrix.length));
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(draw, 35);
+        }
+        
+        // Initialize matrix effect
+        setTimeout(createMatrixRain, 2000);
+    </script>
+</body>
+</html>

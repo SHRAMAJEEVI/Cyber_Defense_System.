@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - CYBER DEFENSE MONITORING SYSTEM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 10s linear infinite;
+            z-index: -1;
+        }
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 0, 110, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 100%, rgba(0, 210, 211, 0.1) 0%, transparent 50%);
+            animation: pulse 4s ease-in-out infinite alternate;
+            z-index: -1;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .login-card {
+            background: linear-gradient(135deg, rgba(15, 12, 41, 0.9), rgba(48, 43, 99, 0.8));
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 255, 136, 0.2);
+            overflow: hidden;
+            max-width: 450px;
+            width: 100%;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+        }
+        .login-card:hover::before {
+            animation: scan 1s linear infinite;
+        }
+        @keyframes scan {
+            0% { transform: rotate(45deg) translateX(-100%); }
+            100% { transform: rotate(45deg) translateX(100%); }
+        }
+        .login-header {
+            background: linear-gradient(45deg, rgba(255, 0, 110, 0.3), rgba(0, 255, 136, 0.2));
+            color: white;
+            padding: 2.5rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+            position: relative;
+        }
+        .login-header h2 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 2rem;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            background: linear-gradient(45deg, #00ff88, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .login-header .subtitle {
+            opacity: 0.9;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .login-body {
+            padding: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-tabs .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 10px 10px 0 0;
+            transition: all 0.3s ease;
+        }
+        .nav-tabs .nav-link:hover {
+            color: #00ff88;
+            background: rgba(0, 255, 136, 0.2);
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+        .nav-tabs .nav-link.active {
+            color: #ffffff;
+            background: rgba(0, 255, 136, 0.3);
+            border-color: rgba(0, 255, 136, 0.5);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 1rem;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            color: #ffffff;
+        }
+        .input-group-text {
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-right: none;
+            color: #00ff88;
+            border-radius: 12px 0 0 12px;
+        }
+        .btn-login {
+            background: linear-gradient(45deg, #ff006e, #ff4081);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            width: 100%;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.3);
+        }
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        .btn-login:hover::before {
+            left: 100%;
+        }
+        .btn-login:hover {
+            background: linear-gradient(45deg, #ff4081, #ff006e);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(255, 0, 110, 0.4);
+        }
+        .alert {
+            border-radius: 12px;
+            border: none;
+            backdrop-filter: blur(10px);
+        }
+        .alert-success {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        .alert-danger {
+            background: rgba(255, 0, 110, 0.2);
+            color: #ff4081;
+            border: 1px solid rgba(255, 0, 110, 0.3);
+        }
+        .security-notice {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .security-notice i {
+            color: #00ff88;
+            margin-right: 8px;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+        .logo-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            animation: rotate 10s linear infinite;
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .btn-outline-light {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+        .btn-outline-light:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+        }
+        .text-danger {
+            color: #ff4081 !important;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 991.98px) {
+            .login-card {
+                max-width: 400px;
+                margin: 0 1rem;
+            }
+            
+            .login-header {
+                padding: 2rem;
+            }
+            
+            .login-header h2 {
+                font-size: 1.8rem;
+            }
+            
+            .login-body {
+                padding: 2rem;
+            }
+            
+            .logo-icon {
+                font-size: 3.5rem;
+            }
+        }
+        
+        @media (max-width: 767.98px) {
+            .login-container {
+                padding: 1rem 0;
+            }
+            
+            .login-card {
+                max-width: 100%;
+                margin: 0 1rem;
+                border-radius: 20px;
+            }
+            
+            .login-header {
+                padding: 1.5rem;
+            }
+            
+            .login-header h2 {
+                font-size: 1.6rem;
+            }
+            
+            .login-header .subtitle {
+                font-size: 0.8rem;
+            }
+            
+            .login-body {
+                padding: 1.5rem;
+            }
+            
+            .logo-icon {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+            }
+            
+            .nav-tabs .nav-link {
+                font-size: 0.9rem;
+                padding: 0.5rem 1rem;
+            }
+            
+            .form-control {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+            
+            .btn-login {
+                padding: 12px;
+                font-size: 1rem;
+            }
+            
+            .btn-outline-light {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.8rem;
+            }
+        }
+        
+        @media (max-width: 575.98px) {
+            .login-card {
+                margin: 0 0.5rem;
+                border-radius: 15px;
+            }
+            
+            .login-header {
+                padding: 1rem;
+            }
+            
+            .login-header h2 {
+                font-size: 1.4rem;
+            }
+            
+            .login-header .subtitle {
+                font-size: 0.7rem;
+            }
+            
+            .login-body {
+                padding: 1rem;
+            }
+            
+            .logo-icon {
+                font-size: 2.5rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .nav-tabs .nav-link {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+            
+            .form-control {
+                padding: 10px;
+                font-size: 0.85rem;
+            }
+            
+            .btn-login {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+            
+            .btn-outline-light {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.6rem;
+            }
+            
+            .security-notice {
+                font-size: 0.75rem;
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    
+    <div class="login-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="login-card">
+                        <div class="login-header">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <a href="/" class="btn btn-outline-light btn-sm">
+                                    <i class="fas fa-home mr-2"></i>Home
+                                </a>
+                                <div class="text-center">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div></div> <!-- Empty div for flex balance -->
+                            </div>
+                            <h2>Admin Panel</h2>
+                            <div class="subtitle">Cyber Defense Management System</div>
+                        </div>
+                        <div class="login-body">
+                            <!-- Message Display -->
+                            {% if message %}
+                                <div class="alert alert-success" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endif %}
+                            
+                            {% if login_form.non_field_errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {% for error in login_form.non_field_errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            
+                            {% if register_form.non_field_errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {% for error in register_form.non_field_errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            
+                            <!-- Tab Navigation -->
+                            <ul class="nav nav-tabs mb-4" id="authTabs" role="tablist">
+                                <li class="nav-item" style="width: 50%;">
+                                    <a class="nav-link active" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
+                                </li>
+                                <li class="nav-item" style="width: 50%;">
+                                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Register</a>
+                                </li>
+                            </ul>
+                            
+                            <!-- Tab Content -->
+                            <div class="tab-content" id="authTabContent">
+                                <!-- Login Tab -->
+                                <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+                                    <form method="post" id="loginForm" autocomplete="off">
+                                        {% csrf_token %}
+                                        {{ login_form.website }}
+                                        
+                                        <div class="text-center mb-4">
+                                            <i class="fas fa-user-shield logo-icon"></i>
+                                        </div>
+                                        
+                                        <div class="form-group mb-3">
+                                            <label for="id_username" class="sr-only">Username</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-user"></i>
+                                                    </span>
+                                                </div>
+                                                {{ login_form.username }}
+                                            </div>
+                                            {% if login_form.username.errors %}
+                                                <div class="text-danger small mt-1">
+                                                    {% for error in login_form.username.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="form-group mb-4">
+                                            <label for="id_password" class="sr-only">Password</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-lock"></i>
+                                                    </span>
+                                                </div>
+                                                {{ login_form.password }}
+                                            </div>
+                                            {% if login_form.password.errors %}
+                                                <div class="text-danger small mt-1">
+                                                    {% for error in login_form.password.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-login">
+                                            <i class="fas fa-sign-in-alt mr-2"></i>Sign In
+                                        </button>
+                                    </form>
+                                </div>
+                                
+                                <!-- Register Tab -->
+                                <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+                                    <form method="post" id="registerForm" autocomplete="off">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="register" value="1">
+                                        
+                                        <div class="text-center mb-4">
+                                            <i class="fas fa-user-plus logo-icon"></i>
+                                        </div>
+                                        
+                                        <div class="form-group mb-3">
+                                            <label for="register_id_username" class="sr-only">Username</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-user"></i>
+                                                    </span>
+                                                </div>
+                                                {{ register_form.username }}
+                                            </div>
+                                            {% if register_form.username.errors %}
+                                                <div class="text-danger small mt-1">
+                                                    {% for error in register_form.username.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="form-group mb-3">
+                                            <label for="register_id_password" class="sr-only">Password</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-lock"></i>
+                                                    </span>
+                                                </div>
+                                                {{ register_form.password }}
+                                            </div>
+                                            {% if register_form.password.errors %}
+                                                <div class="text-danger small mt-1">
+                                                    {% for error in register_form.password.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="form-group mb-4">
+                                            <label for="register_id_confirm_password" class="sr-only">Confirm Password</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-lock"></i>
+                                                    </span>
+                                                </div>
+                                                {{ register_form.confirm_password }}
+                                            </div>
+                                            {% if register_form.confirm_password.errors %}
+                                                <div class="text-danger small mt-1">
+                                                    {% for error in register_form.confirm_password.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-login">
+                                            <i class="fas fa-user-plus mr-2"></i>Register
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            <div class="security-notice">
+                                <i class="fas fa-lock"></i>
+                                Secure Connection Encrypted
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" name="form_submit_time" id="formSubmitTime" value="">
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Track form load time for timing detection
+        const formLoadTime = new Date().getTime();
+        
+        // Set submit time when form is submitted
+        document.getElementById('loginForm').addEventListener('submit', function() {
+            const submitTime = new Date().getTime();
+            const timeDiff = (submitTime - formLoadTime) / 1000; // Convert to seconds
+            document.getElementById('formSubmitTime').value = timeDiff;
+        });
+        
+        // Set submit time when register form is submitted
+        document.getElementById('registerForm').addEventListener('submit', function() {
+            const submitTime = new Date().getTime();
+            const timeDiff = (submitTime - formLoadTime) / 1000; // Convert to seconds
+            document.getElementById('formSubmitTime').value = timeDiff;
+        });
+        
+        // Add matrix rain effect
+        function createMatrixRain() {
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.pointerEvents = 'none';
+            canvas.style.opacity = '0.1';
+            canvas.style.zIndex = '-1';
+            document.body.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const matrix = "01";
+            const fontSize = 16;
+            const columns = canvas.width / fontSize;
+            const drops = [];
+            
+            for (let x = 0; x < columns; x++) {
+                drops[x] = 1;
+            }
+            
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 255, 136, 0.04)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#00ff88';
+                ctx.font = fontSize + 'px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = matrix.charAt(Math.floor(Math.random() * matrix.length));
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(draw, 35);
+        }
+        
+        // Initialize matrix effect
+        setTimeout(createMatrixRain, 2000);
+        
+        // Add cyber typing effect to page title
+        let title = "ADMIN LOGIN - CYBER DEFENSE SYSTEM";
+        let i = 0;
+        function typeTitle() {
+            if (i < title.length) {
+                document.title += title.charAt(i);
+                i++;
+                setTimeout(typeTitle, 100);
+            }
+        }
+        document.title = "";
+        setTimeout(typeTitle, 1000);
+    </script>
+</body>
+</html>

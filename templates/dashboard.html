@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBER DEFENSE SYSTEM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            color: #ffffff;
+        }
+        .navbar {
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid #00ff88;
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: #00ff88 !important;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+        .dashboard-header {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(48, 43, 99, 0.2));
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 2px solid #00ff88;
+        }
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.2), transparent);
+            animation: scan 3s linear infinite;
+        }
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(48, 43, 99, 0.2));
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            text-align: center;
+        }
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.3);
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+        .stat-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            position: relative;
+        }
+        .stat-icon.total {
+            background: linear-gradient(45deg, #ff006e, #ff4081);
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
+        }
+        .stat-icon.unique {
+            background: linear-gradient(45deg, #00ff88, #00cc6a);
+            color: #000000;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+        .stat-icon.recent {
+            background: linear-gradient(45deg, #00d2d3, #01a3a4);
+            color: white;
+            box-shadow: 0 0 20px rgba(0, 210, 211, 0.5);
+        }
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00ff88;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .alert-card {
+            background: linear-gradient(45deg, rgba(255, 0, 110, 0.2), rgba(255, 64, 129, 0.1));
+            color: #ff4081;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 0, 110, 0.5);
+            box-shadow: 0 10px 30px rgba(255, 0, 110, 0.2);
+        }
+        .alert-card i {
+            font-size: 2rem;
+            margin-right: 15px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .chart-container {
+            background: rgba(15, 12, 41, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        .recent-attacks {
+            background: rgba(15, 12, 41, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        .table {
+            background: rgba(15, 12, 41, 0.8);
+            color: #ffffff;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .table th {
+            background: linear-gradient(45deg, #00ff88, #00cc6a);
+            color: #000000;
+            border: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            padding: 1rem;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+        .table td {
+            vertical-align: middle;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            color: #ffffff;
+        }
+        .table tbody tr:hover {
+            background: rgba(0, 255, 136, 0.1);
+            transition: all 0.3s ease;
+        }
+        .badge-ip {
+            background: linear-gradient(45deg, #ff006e, #ff4081);
+            color: white;
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 0, 110, 0.5);
+        }
+        .btn-nav {
+            color: rgba(255,255,255,0.8);
+            transition: all 0.3s ease;
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+        }
+        .btn-nav:hover {
+            color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateY(-2px);
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00ff88;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+        .user-type-badge {
+            font-size: 0.8rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .user-type-normal {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+        }
+        .user-type-suspicious {
+            background: linear-gradient(45deg, #ffc107, #ff9800);
+            color: #212529;
+        }
+        .user-type-attacker {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+            color: white;
+        }
+        .threat-score {
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .threat-low {
+            color: #28a745;
+        }
+        .threat-medium {
+            color: #ffc107;
+        }
+        .threat-high {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <i class="fas fa-shield-alt mr-2"></i>CYBER DEFENSE SYSTEM
+            </a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-item nav-link btn-nav" href="{% url 'home' %}">
+                    <i class="fas fa-home mr-1"></i> Home
+                </a>
+                <a class="nav-item nav-link btn-nav active" href="{% url 'dashboard' %}">
+                    <i class="fas fa-chart-line mr-1"></i> Dashboard
+                </a>
+                <a class="nav-item nav-link btn-nav" href="{% url 'attack_logs' %}">
+                    <i class="fas fa-clock mr-1"></i> Recent Logs
+                </a>
+                <a class="nav-item nav-link btn-nav" href="{% url 'previous_logs' %}">
+                    <i class="fas fa-history mr-1"></i> Previous Logs
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-header">
+        <div class="container">
+            <h1><i class="fas fa-chart-line mr-3"></i>THREAT MONITORING DASHBOARD</h1>
+            <p class="lead mb-0">Real-time cyber threat detection and analysis</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- User Classification Statistics -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(45deg, #28a745, #20c997);">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-number">{{ normal_users }}</div>
+                    <div class="stat-label">Normal Users</div>
+                    <small class="text-muted">Legitimate access attempts</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(45deg, #ffc107, #ff9800);">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="stat-number">{{ suspicious_users }}</div>
+                    <div class="stat-label">Suspicious Users</div>
+                    <small class="text-muted">Potentially harmful activity</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(45deg, #dc3545, #c82333);">
+                        <i class="fas fa-user-ninja"></i>
+                    </div>
+                    <div class="stat-number">{{ attackers }}</div>
+                    <div class="stat-label">Attackers</div>
+                    <small class="text-muted">Confirmed malicious attempts</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon total">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-number">{{ total_attacks }}</div>
+                    <div class="stat-label">Total Attempts</div>
+                    <small class="text-muted">Last 30 days: {{ monthly_attacks }}</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon unique">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <div class="stat-number">{{ unique_ips }}</div>
+                    <div class="stat-label">Unique IPs</div>
+                    <small class="text-muted">Different sources</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon recent">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-number">{{ recent_attacks }}</div>
+                    <div class="stat-label">Last 24 Hours</div>
+                    <small class="text-muted">{{ attack_rate }}/hour avg</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon recent" style="background: linear-gradient(45deg, #ff6b6b, #ee5a24);">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="stat-number">{{ weekly_attacks }}</div>
+                    <div class="stat-label">This Week</div>
+                    <small class="text-muted">7-day total</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Statistics Row -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(45deg, #9b59b6, #8e44ad);">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="stat-number">{{ attack_rate }}</div>
+                    <div class="stat-label">Attacks/Hour</div>
+                    <small class="text-muted">Current threat level</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(45deg, #f39c12, #e67e22);">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-number">{% if most_active_hour %}{{ most_active_hour.hour }}:00{% else %}--:--{% endif %}</div>
+                    <div class="stat-label">Peak Hour</div>
+                    <small class="text-muted">Most active time</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(45deg, #e74c3c, #c0392b);">
+                        <i class="fas fa-skull"></i>
+                    </div>
+                    <div class="stat-number">{{ brute_force_ips|length }}</div>
+                    <div class="stat-label">Brute Force IPs</div>
+                    <small class="text-muted">High-threat sources</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Alerts -->
+        {% if brute_force_ips %}
+        <div class="row">
+            <div class="col-12">
+                <div class="alert-card">
+                    <h5><i class="fas fa-exclamation-triangle"></i>SECURITY ALERT</h5>
+                    {% for ip in brute_force_ips %}
+                        <p class="mb-1">
+                            <strong>Possible brute force attack detected from IP: {{ ip.ip_address }}</strong>
+                            <span class="badge badge-danger ml-2">{{ ip.attempt_count }} attempts</span>
+                        </p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row">
+            <!-- Attack Chart -->
+            <div class="col-lg-8">
+                <div class="chart-container">
+                    <h5 class="section-title"><i class="fas fa-chart-bar mr-2"></i>7-Day Attack Trend</h5>
+                    <canvas id="attackChart" height="100"></canvas>
+                </div>
+            </div>
+
+            <!-- Top Attackers -->
+            <div class="col-lg-4">
+                <div class="recent-attacks">
+                    <h5 class="section-title"><i class="fas fa-crown mr-2"></i>Top Attackers</h5>
+                    {% if top_ips %}
+                        {% for ip in top_ips %}
+                        <div class="mb-2">
+                            <small class="text-muted">{{ ip.ip_address }}</small>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar" style="width: {{ ip.count }}%; background: linear-gradient(45deg, #ff006e, #ff4081);"></div>
+                            </div>
+                            <small class="text-success">{{ ip.count }} attempts</small>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No attack data available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Analytics Row -->
+        <div class="row mt-4">
+            <!-- Attack Types -->
+            <div class="col-md-4">
+                <div class="chart-container">
+                    <h5 class="section-title"><i class="fas fa-tags mr-2"></i>Attack Types</h5>
+                    {% if attack_types %}
+                        {% for attack_type in attack_types %}
+                        <div class="mb-2">
+                            <small>{{ attack_type.attack_type }}</small>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar" style="width: {{ attack_type.count }}%; background: linear-gradient(45deg, #00ff88, #00cc6a);"></div>
+                            </div>
+                            <small class="text-info">{{ attack_type.count }}</small>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No attack type data.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Targeted Usernames -->
+            <div class="col-md-4">
+                <div class="chart-container">
+                    <h5 class="section-title"><i class="fas fa-user mr-2"></i>Targeted Users</h5>
+                    {% if top_usernames %}
+                        {% for username in top_usernames %}
+                        <div class="mb-2">
+                            <small class="text-warning">{{ username.username_attempted }}</small>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar" style="width: {{ username.count }}%; background: linear-gradient(45deg, #f39c12, #e67e22);"></div>
+                            </div>
+                            <small class="text-warning">{{ username.count }}</small>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No username data.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Latest Attacks -->
+            <div class="col-md-4">
+                <div class="recent-attacks">
+                    <h5 class="section-title"><i class="fas fa-history mr-2"></i>Latest Attacks</h5>
+                    {% if latest_attacks %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>IP</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for attack in latest_attacks %}
+                                    <tr>
+                                        <td><span class="badge badge-ip">{{ attack.ip_address }}</span></td>
+                                        <td>{{ attack.timestamp|date:"H:i" }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No attacks recorded yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- User Classification Breakdown Table -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="recent-attacks">
+                    <h5 class="section-title"><i class="fas fa-users mr-2"></i>User Classification Breakdown</h5>
+                    {% if classification_table %}
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>IP Address</th>
+                                        <th>Threat Score</th>
+                                        <th>User Type</th>
+                                        <th>Time</th>
+                                        <th>Attack Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for entry in classification_table %}
+                                    <tr>
+                                        <td>{{ entry.username_attempted|default:"Unknown" }}</td>
+                                        <td><span class="badge badge-ip">{{ entry.ip_address }}</span></td>
+                                        <td>
+                                            <span class="threat-score 
+                                                {% if entry.threat_score < 8 %}threat-low
+                                                {% elif entry.threat_score < 15 %}threat-medium
+                                                {% else %}threat-high{% endif %}">
+                                                {{ entry.threat_score }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="user-type-badge user-type-{{ entry.user_type|lower }}">
+                                                {{ entry.user_type }}
+                                            </span>
+                                        </td>
+                                        <td>{{ entry.timestamp|date:"Y-m-d H:i:s" }}</td>
+                                        <td>
+                                            {% if entry.attack_reason %}
+                                                <small class="text-muted">{{ entry.attack_reason|striptags|truncatechars:50 }}</small>
+                                            {% else %}
+                                                <small class="text-muted">No specific reason</small>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No classification data available yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Attack Chart
+        const ctx = document.getElementById('attackChart').getContext('2d');
+        const dailyData = {{ daily_data|safe }};
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: dailyData.map(item => item.day),
+                datasets: [{
+                    label: 'Daily Attacks',
+                    data: dailyData.map(item => item.count),
+                    backgroundColor: 'rgba(0, 255, 136, 0.6)',
+                    borderColor: '#00ff88',
+                    borderWidth: 2,
+                    borderRadius: 5,
+                    hoverBackgroundColor: 'rgba(0, 255, 136, 0.8)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 12, 41, 0.9)',
+                        titleColor: '#00ff88',
+                        bodyColor: '#ffffff',
+                        borderColor: '#00ff88',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)',
+                            borderColor: 'rgba(0, 255, 136, 0.3)'
+                        },
+                        ticks: {
+                            color: '#ffffff'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)',
+                            borderColor: 'rgba(0, 255, 136, 0.3)'
+                        },
+                        ticks: {
+                            color: '#ffffff',
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+
+        // Auto-refresh dashboard every 30 seconds
+        setInterval(function() {
+            location.reload();
+        }, 30000);
+        
+        // Add typing effect to page title
+        let title = "CYBER DEFENSE SYSTEM";
+        let i = 0;
+        function typeTitle() {
+            if (i < title.length) {
+                document.title += title.charAt(i);
+                i++;
+                setTimeout(typeTitle, 100);
+            }
+        }
+        setTimeout(typeTitle, 1000);
+    </script>
+</body>
+</html>

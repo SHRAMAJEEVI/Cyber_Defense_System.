@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attacker Types - CYBER DEFENSE MONITORING SYSTEM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 10s linear infinite;
+            z-index: -1;
+        }
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        .hero-section {
+            min-height: 40vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+            padding: 4rem 0;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 0, 110, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 100%, rgba(0, 210, 211, 0.1) 0%, transparent 50%);
+            animation: pulse 4s ease-in-out infinite alternate;
+            z-index: -1;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            background: linear-gradient(45deg, #00ff88, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            0% { filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5)); }
+            100% { filter: drop-shadow(0 0 20px rgba(255, 0, 110, 0.5)); }
+        }
+        .hero-description {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        .attacker-grid {
+            padding: 4rem 0;
+        }
+        .attacker-card {
+            background: linear-gradient(135deg, rgba(15, 12, 41, 0.9), rgba(48, 43, 99, 0.8));
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        .attacker-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.05), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+        }
+        .attacker-card:hover::before {
+            animation: scan 1s linear infinite;
+        }
+        @keyframes scan {
+            0% { transform: rotate(45deg) translateX(-100%); }
+            100% { transform: rotate(45deg) translateX(100%); }
+        }
+        .attacker-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(0, 255, 136, 0.2);
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+        .attacker-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .attacker-icon {
+            font-size: 3rem;
+            margin-right: 1.5rem;
+            text-shadow: 0 0 20px currentColor;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .attacker-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+            color: #ffffff;
+        }
+        .attacker-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        .attacker-details {
+            position: relative;
+            z-index: 1;
+        }
+        .detail-section {
+            margin-bottom: 1.5rem;
+        }
+        .detail-label {
+            font-weight: 600;
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .detail-content {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 0.95rem;
+        }
+        .pattern-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .pattern-tag {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.85rem;
+            font-family: monospace;
+        }
+        .example-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .example-list li {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+            border-left: 3px solid;
+        }
+        .threat-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .threat-high {
+            background: rgba(255, 0, 110, 0.3);
+            border: 1px solid rgba(255, 0, 110, 0.5);
+            color: #ff4081;
+        }
+        .threat-medium {
+            background: rgba(255, 193, 7, 0.3);
+            border: 1px solid rgba(255, 193, 7, 0.5);
+            color: #ffc107;
+        }
+        .threat-low {
+            background: rgba(0, 255, 136, 0.3);
+            border: 1px solid rgba(0, 255, 136, 0.5);
+            color: #00ff88;
+        }
+        .threat-variable {
+            background: rgba(156, 39, 176, 0.3);
+            border: 1px solid rgba(156, 39, 176, 0.5);
+            color: #9c27b0;
+        }
+        .stats-section {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(48, 43, 99, 0.2));
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            text-align: center;
+        }
+        .stats-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+        .stats-label {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 0.5rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 991.98px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-description {
+                font-size: 1.1rem;
+            }
+            
+            .attacker-card {
+                padding: 2rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .attacker-icon {
+                font-size: 2.5rem;
+            }
+            
+            .attacker-title {
+                font-size: 1.5rem;
+            }
+            
+            .threat-badge {
+                font-size: 0.7rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+        
+        @media (max-width: 767.98px) {
+            .hero-section {
+                padding: 2rem 0;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-description {
+                font-size: 1rem;
+            }
+            
+            .stats-section {
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            
+            .stats-number {
+                font-size: 2.5rem;
+            }
+            
+            .stats-label {
+                font-size: 1rem;
+            }
+            
+            .attacker-grid {
+                padding: 2rem 0;
+            }
+            
+            .attacker-card {
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .attacker-header {
+                flex-direction: column;
+                text-align: center;
+                margin-bottom: 1rem;
+            }
+            
+            .attacker-icon {
+                font-size: 2rem;
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+            
+            .attacker-title {
+                font-size: 1.3rem;
+                text-align: center;
+            }
+            
+            .attacker-description {
+                font-size: 1rem;
+                text-align: center;
+            }
+            
+            .threat-badge {
+                position: static;
+                margin-bottom: 1rem;
+                align-self: center;
+            }
+            
+            .pattern-list {
+                justify-content: center;
+            }
+            
+            .pattern-tag {
+                font-size: 0.75rem;
+                padding: 0.2rem 0.6rem;
+            }
+            
+            .detail-content {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+            
+            .example-list li {
+                font-size: 0.8rem;
+                padding: 0.6rem;
+            }
+            
+            .navbar-brand {
+                font-size: 1.2rem !important;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 0.3rem 0.8rem !important;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 575.98px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .hero-description {
+                font-size: 0.9rem;
+            }
+            
+            .stats-section {
+                padding: 1rem;
+            }
+            
+            .stats-number {
+                font-size: 2rem;
+            }
+            
+            .stats-label {
+                font-size: 0.9rem;
+            }
+            
+            .attacker-grid {
+                padding: 1rem 0;
+            }
+            
+            .attacker-card {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .attacker-icon {
+                font-size: 1.8rem;
+            }
+            
+            .attacker-title {
+                font-size: 1.2rem;
+            }
+            
+            .attacker-description {
+                font-size: 0.9rem;
+            }
+            
+            .threat-badge {
+                font-size: 0.6rem;
+                padding: 0.3rem 0.6rem;
+            }
+            
+            .pattern-tag {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.5rem;
+            }
+            
+            .detail-label {
+                font-size: 0.8rem;
+            }
+            
+            .detail-content {
+                padding: 0.6rem;
+                font-size: 0.8rem;
+            }
+            
+            .example-list li {
+                font-size: 0.75rem;
+                padding: 0.5rem;
+            }
+            
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
+            
+            .navbar-brand {
+                font-size: 1rem !important;
+            }
+            
+            .navbar-nav {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 0.2rem 0.5rem !important;
+                font-size: 0.8rem;
+                margin: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark" style="position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(15, 12, 41, 0.95); backdrop-filter: blur(10px); border-bottom: 2px solid #00ff88;">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}" style="font-weight: 700; font-size: 1.4rem; color: #00ff88 !important; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);">
+                <i class="fas fa-shield-alt mr-2"></i>CYBER DEFENSE SYSTEM
+            </a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-item nav-link btn-nav" href="{% url 'home' %}" style="color: rgba(255,255,255,0.8); transition: all 0.3s ease; border-radius: 25px; padding: 0.5rem 1rem;">
+                    <i class="fas fa-home mr-1"></i> Home
+                </a>
+                <a class="nav-item nav-link btn-nav" href="{% url 'dashboard' %}" style="color: rgba(255,255,255,0.8); transition: all 0.3s ease; border-radius: 25px; padding: 0.5rem 1rem;">
+                    <i class="fas fa-chart-line mr-1"></i> Dashboard
+                </a>
+                <a class="nav-item nav-link btn-nav" href="{% url 'attack_logs' %}" style="color: rgba(255,255,255,0.8); transition: all 0.3s ease; border-radius: 25px; padding: 0.5rem 1rem;">
+                    <i class="fas fa-clock mr-1"></i> Recent Logs
+                </a>
+                <a class="nav-item nav-link btn-nav" href="{% url 'previous_logs' %}" style="color: rgba(255,255,255,0.8); transition: all 0.3s ease; border-radius: 25px; padding: 0.5rem 1rem;">
+                    <i class="fas fa-history mr-1"></i> Previous Logs
+                </a>
+                <a class="nav-item nav-link btn-nav" href="{% url 'attacker_types' %}" style="color: rgba(255,255,255,0.8); transition: all 0.3s ease; border-radius: 25px; padding: 0.5rem 1rem; background: rgba(0, 255, 136, 0.2); border: 1px solid rgba(0, 255, 136, 0.3);">
+                    <i class="fas fa-bug mr-1"></i> Attacker Types
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">ATTACKER TYPES DATABASE</h1>
+                <p class="hero-description">
+                    Comprehensive intelligence on different attack vectors, patterns, and behaviors detected by our cyber defense system
+                </p>
+                
+                <div class="stats-section">
+                    <div class="stats-number">{{ total_types }}</div>
+                    <div class="stats-label">Attacker Types Classified</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="attacker-grid">
+        <div class="container">
+            <div class="row">
+                {% for attacker in attacker_data %}
+                <div class="col-lg-6">
+                    <div class="attacker-card">
+                        <div class="threat-badge threat-{{ attacker.threat_level.lower }}">
+                            {{ attacker.threat_level }} THREAT
+                        </div>
+                        
+                        <div class="attacker-header">
+                            <div class="attacker-icon" style="color: {{ attacker.color }}">
+                                <i class="fas {{ attacker.icon }}"></i>
+                            </div>
+                            <h3 class="attacker-title">{{ attacker.name }}</h3>
+                        </div>
+                        
+                        <p class="attacker-description">{{ attacker.description }}</p>
+                        
+                        <div class="attacker-details">
+                            <div class="detail-section">
+                                <div class="detail-label">Attack Patterns</div>
+                                <div class="detail-content">
+                                    <div class="pattern-list">
+                                        {% for pattern in attacker.patterns %}
+                                        <span class="pattern-tag">{{ pattern }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-label">Motivation</div>
+                                <div class="detail-content">
+                                    {{ attacker.motivation }}
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-label">Detection Method</div>
+                                <div class="detail-content">
+                                    {{ attacker.detection }}
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-label">Attack Examples</div>
+                                <div class="detail-content">
+                                    <ul class="example-list">
+                                        {% for example in attacker.examples %}
+                                        <li style="border-left-color: {{ attacker.color }}">{{ example }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add matrix rain effect
+        function createMatrixRain() {
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.pointerEvents = 'none';
+            canvas.style.opacity = '0.1';
+            canvas.style.zIndex = '-1';
+            document.body.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const matrix = "01";
+            const fontSize = 16;
+            const columns = canvas.width / fontSize;
+            const drops = [];
+            
+            for (let x = 0; x < columns; x++) {
+                drops[x] = 1;
+            }
+            
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 255, 136, 0.04)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#00ff88';
+                ctx.font = fontSize + 'px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = matrix.charAt(Math.floor(Math.random() * matrix.length));
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(draw, 35);
+        }
+        
+        // Initialize matrix effect
+        setTimeout(createMatrixRain, 2000);
+        
+        // Add cyber typing effect to page title
+        let title = "ATTACKER TYPES - CYBER DEFENSE SYSTEM";
+        let i = 0;
+        function typeTitle() {
+            if (i < title.length) {
+                document.title += title.charAt(i);
+                i++;
+                setTimeout(typeTitle, 100);
+            }
+        }
+        document.title = "";
+        setTimeout(typeTitle, 1000);
+        
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all attacker cards
+        document.querySelectorAll('.attacker-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
