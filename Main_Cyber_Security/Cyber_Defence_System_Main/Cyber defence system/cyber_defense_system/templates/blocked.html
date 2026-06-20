@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Blocked - Cyber Defense System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .blocked-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 3rem;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        .blocked-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: #dc3545;
+        }
+        .blocked-title {
+            color: #dc3545;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .threat-score {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+        .score-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #dc3545;
+        }
+        .user-type-badge {
+            font-size: 1.2rem;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            margin: 1rem 0;
+            display: inline-block;
+        }
+        .suspicious {
+            background: #ffc107;
+            color: #212529;
+        }
+        .attacker {
+            background: #dc3545;
+            color: white;
+        }
+        .reason-box {
+            background: #f8f9fa;
+            border-left: 4px solid #dc3545;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="blocked-container">
+        <i class="fas fa-shield-virus blocked-icon"></i>
+        
+        <h1 class="blocked-title">Access Blocked</h1>
+        
+        <p class="lead">Your login attempt has been flagged as suspicious.</p>
+        
+        <div class="threat-score">
+            <div class="text-muted">Threat Score</div>
+            <div class="score-value">{{ threat_score }}</div>
+        </div>
+        
+        <div class="user-type-badge {{ user_type|lower }}">
+            <i class="fas fa-exclamation-triangle mr-2"></i>
+            {{ user_type }} User
+        </div>
+        
+        {% if attack_reason %}
+        <div class="reason-box">
+            <strong>Detection Reasons:</strong>
+            <ul class="mb-0 mt-2">
+                {{ attack_reason|safe }}
+            </ul>
+        </div>
+        {% endif %}
+        
+        <div class="alert alert-warning mt-3">
+            <i class="fas fa-info-circle mr-2"></i>
+            This incident has been logged and will be reviewed by our security team.
+        </div>
+        
+        <div class="mt-4">
+            <a href="{% url 'home' %}" class="btn btn-outline-primary">
+                <i class="fas fa-home mr-2"></i>Return to Home
+            </a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
